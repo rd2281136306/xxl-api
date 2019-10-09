@@ -1,13 +1,12 @@
 package com.xxl.api.admin.controller;
 
 import com.xxl.api.admin.core.model.*;
+import com.xxl.api.admin.core.util.tool.ArrayTool;
+import com.xxl.api.admin.core.util.tool.StringTool;
 import com.xxl.api.admin.dao.IXxlApiDocumentDao;
 import com.xxl.api.admin.dao.IXxlApiGroupDao;
 import com.xxl.api.admin.dao.IXxlApiProjectDao;
 import com.xxl.api.admin.service.impl.LoginService;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,7 +51,7 @@ public class XxlApiGroupController {
 
 		// 选中分组
 		XxlApiGroup groupInfo = null;
-		if (CollectionUtils.isNotEmpty(groupList)) {
+		if (groupList!=null && groupList.size()>0) {
 			for (XxlApiGroup groupItem: groupList) {
 				if (groupId == groupItem.getId()) {
 					groupInfo = groupItem;
@@ -78,7 +77,7 @@ public class XxlApiGroupController {
 	private boolean hasBizPermission(HttpServletRequest request, int bizId){
 		XxlApiUser loginUser = (XxlApiUser) request.getAttribute(LoginService.LOGIN_IDENTITY);
 		if ( loginUser.getType()==1 ||
-				ArrayUtils.contains(StringUtils.split(loginUser.getPermissionBiz(), ","), String.valueOf(bizId))
+				ArrayTool.contains(StringTool.split(loginUser.getPermissionBiz(), ","), String.valueOf(bizId))
 				) {
 			return true;
 		} else {
@@ -90,7 +89,7 @@ public class XxlApiGroupController {
 	@ResponseBody
 	public ReturnT<String> add(HttpServletRequest request, XxlApiGroup xxlApiGroup) {
 		// valid
-		if (StringUtils.isBlank(xxlApiGroup.getName())) {
+		if (StringTool.isBlank(xxlApiGroup.getName())) {
 			return new ReturnT<String>(ReturnT.FAIL_CODE, "请输入“分组名称”");
 		}
 
@@ -120,7 +119,7 @@ public class XxlApiGroupController {
 		}
 
 		// valid
-		if (StringUtils.isBlank(xxlApiGroup.getName())) {
+		if (StringTool.isBlank(xxlApiGroup.getName())) {
 			return new ReturnT<String>(ReturnT.FAIL_CODE, "请输入“分组名称”");
 		}
 
@@ -146,7 +145,7 @@ public class XxlApiGroupController {
 
 		// 分组下是否存在接口
 		List<XxlApiDocument> documentList = xxlApiDocumentDao.loadByGroupId(id);
-		if (CollectionUtils.isNotEmpty(documentList)) {
+		if (documentList!=null && documentList.size()>0) {
 			return new ReturnT<String>(ReturnT.FAIL_CODE, "拒绝删除，分组下存在接口，不允许强制删除");
 		}
 

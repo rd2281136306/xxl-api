@@ -193,15 +193,17 @@ $(function() {
 	 */
 	$("#searchUrl").bind('input porpertychange',function(){
 		var searchUrl = $("#searchUrl").val();
+		if (searchUrl) {
+            searchUrl = searchUrl.toLowerCase();
+		}
 		$('#documentList').find('tbody tr').each(function(){
-			var requestUrl = $(this).attr('requestUrl');
+			var requestUrl = $(this).attr('requestUrl').toLowerCase();
 			if (searchUrl) {
 				if (requestUrl.indexOf(searchUrl) != -1) {
 					$(this).show();
 				} else {
 					$(this).hide();
 				}
-
 			} else {
 				$(this).show();
 			}

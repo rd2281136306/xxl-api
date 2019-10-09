@@ -1,14 +1,13 @@
 package com.xxl.api.admin.controller;
 
 import com.xxl.api.admin.core.model.*;
+import com.xxl.api.admin.core.util.tool.ArrayTool;
+import com.xxl.api.admin.core.util.tool.StringTool;
 import com.xxl.api.admin.dao.IXxlApiBizDao;
 import com.xxl.api.admin.dao.IXxlApiDocumentDao;
 import com.xxl.api.admin.dao.IXxlApiGroupDao;
 import com.xxl.api.admin.dao.IXxlApiProjectDao;
 import com.xxl.api.admin.service.impl.LoginService;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -70,7 +69,7 @@ public class XxlApiProjectController {
 	private boolean hasBizPermission(HttpServletRequest request, int bizId){
 		XxlApiUser loginUser = (XxlApiUser) request.getAttribute(LoginService.LOGIN_IDENTITY);
 		if ( loginUser.getType()==1 ||
-				ArrayUtils.contains(StringUtils.split(loginUser.getPermissionBiz(), ","), String.valueOf(bizId))
+				ArrayTool.contains(StringTool.split(loginUser.getPermissionBiz(), ","), String.valueOf(bizId))
 				) {
 			return true;
 		} else {
@@ -82,10 +81,10 @@ public class XxlApiProjectController {
 	@ResponseBody
 	public ReturnT<String> add(HttpServletRequest request, XxlApiProject xxlApiProject) {
 		// valid
-		if (StringUtils.isBlank(xxlApiProject.getName())) {
+		if (StringTool.isBlank(xxlApiProject.getName())) {
 			return new ReturnT<String>(ReturnT.FAIL_CODE, "请输入项目名称");
 		}
-		if (StringUtils.isBlank(xxlApiProject.getBaseUrlProduct())) {
+		if (StringTool.isBlank(xxlApiProject.getBaseUrlProduct())) {
 			return new ReturnT<String>(ReturnT.FAIL_CODE, "请输入根地址(线上)");
 		}
 
@@ -107,10 +106,10 @@ public class XxlApiProjectController {
 		}
 
 		// valid
-		if (StringUtils.isBlank(xxlApiProject.getName())) {
+		if (StringTool.isBlank(xxlApiProject.getName())) {
 			return new ReturnT<String>(ReturnT.FAIL_CODE, "请输入项目名称");
 		}
-		if (StringUtils.isBlank(xxlApiProject.getBaseUrlProduct())) {
+		if (StringTool.isBlank(xxlApiProject.getBaseUrlProduct())) {
 			return new ReturnT<String>(ReturnT.FAIL_CODE, "请输入根地址(线上)");
 		}
 
@@ -138,13 +137,13 @@ public class XxlApiProjectController {
 
 		// 项目下是否存在分组
 		List<XxlApiGroup> groupList = xxlApiGroupDao.loadAll(id);
-		if (CollectionUtils.isNotEmpty(groupList)) {
+		if (groupList!=null && groupList.size()>0) {
 			return new ReturnT<String>(ReturnT.FAIL_CODE, "该项目下存在分组信息，拒绝删除");
 		}
 
 		// 项目下是否存在接口
 		List<XxlApiDocument> documents = xxlApiDocumentDao.loadAll(id, -1);
-		if (CollectionUtils.isNotEmpty(documents)) {
+		if (documents!=null && documents.size()>0) {
 			return new ReturnT<String>(ReturnT.FAIL_CODE, "该项目下存在接口信息，拒绝删除");
 		}
 

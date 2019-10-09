@@ -4,7 +4,10 @@
 ### 1.1 概述
 XXL-API 是一个强大易用的API管理平台，提供API的"管理"、"文档"、"Mock"和"测试"等功能。现已开放源代码，开箱即用。
 
-### 1.2 特性
+### 1.2 社区交流    
+- [社区交流](http://www.xuxueli.com/page/community.html)
+
+### 1.3 特性
 - 1、极致简单：交互简洁，一分钟上手；
 - 2、项目隔离：API以项目为维度进行拆分隔离；
 - 3、分组管理：单个项目内的API支持自定义分组进行管理；
@@ -16,7 +19,7 @@ XXL-API 是一个强大易用的API管理平台，提供API的"管理"、"文档
 - 9、在线测试：支持在线对API进行测试并保存测试数据，提供接口测试效率；
 - 10、权限控制：支持以业务线为维度进行用户权限控制，分配权限才允许操作业务线下项目接口和数据类型，否则仅允许查看；
 
-### 1.3 下载
+### 1.4 下载
 
 #### 文档地址
 
@@ -29,15 +32,11 @@ XXL-API 是一个强大易用的API管理平台，提供API的"管理"、"文档
 [https://github.com/xuxueli/xxl-api](https://github.com/xuxueli/xxl-api) | [Download](https://github.com/xuxueli/xxl-api/releases)  
 [http://gitee.com/xuxueli0323/xxl-api](http://gitee.com/xuxueli0323/xxl-api) | [Download](http://gitee.com/xuxueli0323/xxl-api/releases)
 
-#### 技术交流
-- [社区交流](http://www.xuxueli.com/page/community.html)
 
-### 1.4 环境
-- Servlet/JSP Spec：3.0/2.2
-- JDK：1.7+
-- Tomcat：7+/Jetty8+
-- Mysql：5.6+
+### 1.5 环境
 - Maven：3+
+- JDK：1.7+
+- Mysql：5.6+
 
 
 ## 二、快速部署
@@ -300,8 +299,11 @@ Mock数据属性说明：
 
 ### 8.4 版本 V1.1.2 特性[迭代中]
 - 1、Docker基础镜像切换，精简镜像；
-- 2、【ING】API导出为PDF；
-- 3、【ING】支持swagger、postman等格式接口数据导入；
+- 2、freemarker对数字默认加千分位问题修复，解决日志ID被分隔导致查看日志失败问题；
+- 3、升级依赖版本，如springboot、mybatis、httpclient等；
+- 4、精简项目，移除依赖如commons-collections4、commons-lang3；
+- 5、【ING】API导出为PDF；
+- 6、【ING】支持swagger、postman等格式接口数据导入；
 
 ### TODO LIST
 - 1、请求参数，除常规form之外，支持选择RequestBody方式，传递Json、XML和文本等数据；

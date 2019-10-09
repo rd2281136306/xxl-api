@@ -2,13 +2,12 @@ package com.xxl.api.admin.controller;
 
 import com.xxl.api.admin.core.consistant.RequestConfig;
 import com.xxl.api.admin.core.model.*;
+import com.xxl.api.admin.core.util.tool.ArrayTool;
 import com.xxl.api.admin.core.util.JacksonUtil;
+import com.xxl.api.admin.core.util.tool.StringTool;
 import com.xxl.api.admin.dao.*;
 import com.xxl.api.admin.service.IXxlApiDataTypeService;
 import com.xxl.api.admin.service.impl.LoginService;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,7 +42,7 @@ public class XxlApiDocumentController {
 	private boolean hasBizPermission(HttpServletRequest request, int bizId){
 		XxlApiUser loginUser = (XxlApiUser) request.getAttribute(LoginService.LOGIN_IDENTITY);
 		if ( loginUser.getType()==1 ||
-				ArrayUtils.contains(StringUtils.split(loginUser.getPermissionBiz(), ","), String.valueOf(bizId))
+				ArrayTool.contains(StringTool.split(loginUser.getPermissionBiz(), ","), String.valueOf(bizId))
 				) {
 			return true;
 		} else {
@@ -90,13 +89,13 @@ public class XxlApiDocumentController {
 
 		// 存在Test记录，拒绝删除
 		List<XxlApiTestHistory> historyList = xxlApiTestHistoryDao.loadByDocumentId(id);
-		if (CollectionUtils.isNotEmpty(historyList)) {
+		if (historyList!=null && historyList.size()>0) {
 			return new ReturnT<String>(ReturnT.FAIL_CODE, "拒绝删除，该接口下存在Test记录，不允许删除");
 		}
 
 		// 存在Mock记录，拒绝删除
 		List<XxlApiMock> mockList = xxlApiMockDao.loadAll(id);
-		if (CollectionUtils.isNotEmpty(mockList)) {
+		if (mockList!=null && mockList.size()>0) {
 			return new ReturnT<String>(ReturnT.FAIL_CODE, "拒绝删除，该接口下存在Mock记录，不允许删除");
 		}
 
@@ -171,9 +170,9 @@ public class XxlApiDocumentController {
 			throw new RuntimeException("操作失败，接口ID非法");
 		}
 		model.addAttribute("document", xxlApiDocument);
-		model.addAttribute("requestHeadersList", (StringUtils.isNotBlank(xxlApiDocument.getRequestHeaders()))?JacksonUtil.readValue(xxlApiDocument.getRequestHeaders(), List.class):null );
-		model.addAttribute("queryParamList", (StringUtils.isNotBlank(xxlApiDocument.getQueryParams()))?JacksonUtil.readValue(xxlApiDocument.getQueryParams(), List.class):null );
-		model.addAttribute("responseParamList", (StringUtils.isNotBlank(xxlApiDocument.getResponseParams()))?JacksonUtil.readValue(xxlApiDocument.getResponseParams(), List.class):null );
+		model.addAttribute("requestHeadersList", (StringTool.isNotBlank(xxlApiDocument.getRequestHeaders()))?JacksonUtil.readValue(xxlApiDocument.getRequestHeaders(), List.class):null );
+		model.addAttribute("queryParamList", (StringTool.isNotBlank(xxlApiDocument.getQueryParams()))?JacksonUtil.readValue(xxlApiDocument.getQueryParams(), List.class):null );
+		model.addAttribute("responseParamList", (StringTool.isNotBlank(xxlApiDocument.getResponseParams()))?JacksonUtil.readValue(xxlApiDocument.getResponseParams(), List.class):null );
 
 		// project
 		int projectId = xxlApiDocument.getProjectId();
@@ -239,9 +238,9 @@ public class XxlApiDocumentController {
 			throw new RuntimeException("操作失败，接口ID非法");
 		}
 		model.addAttribute("document", xxlApiDocument);
-		model.addAttribute("requestHeadersList", (StringUtils.isNotBlank(xxlApiDocument.getRequestHeaders()))?JacksonUtil.readValue(xxlApiDocument.getRequestHeaders(), List.class):null );
-		model.addAttribute("queryParamList", (StringUtils.isNotBlank(xxlApiDocument.getQueryParams()))?JacksonUtil.readValue(xxlApiDocument.getQueryParams(), List.class):null );
-		model.addAttribute("responseParamList", (StringUtils.isNotBlank(xxlApiDocument.getResponseParams()))?JacksonUtil.readValue(xxlApiDocument.getResponseParams(), List.class):null );
+		model.addAttribute("requestHeadersList", (StringTool.isNotBlank(xxlApiDocument.getRequestHeaders()))?JacksonUtil.readValue(xxlApiDocument.getRequestHeaders(), List.class):null );
+		model.addAttribute("queryParamList", (StringTool.isNotBlank(xxlApiDocument.getQueryParams()))?JacksonUtil.readValue(xxlApiDocument.getQueryParams(), List.class):null );
+		model.addAttribute("responseParamList", (StringTool.isNotBlank(xxlApiDocument.getResponseParams()))?JacksonUtil.readValue(xxlApiDocument.getResponseParams(), List.class):null );
 
 		// project
 		int projectId = xxlApiDocument.getProjectId();
